@@ -4,19 +4,33 @@ ini_set('display_errors', 'On');
 require 'src/PerlinNoiseGenerator.php';
 $gen = new PerlinNoiseGenerator();
 
-$x = 500;
-$y = 500;
+$size = 250;
 
 $gen->setPersistence(0.78);
-$gen->setSizes(array($x, $y));
+$gen->setSize($size);
 $map = $gen->generate();
 
-$image = imagecreatetruecolor($x, $y);
+$image = imagecreatetruecolor($size, $size);
 
-for ($iy = 0; $iy < $y; $iy++) {
-    for ($ix = 0; $ix < $x; $ix++) {
-        $h = $map[$ix][$iy];
-        $color = imagecolorallocate($image, $h * 50, $h * 50, $h * 50);
+$max = 0;
+$min = PHP_INT_MAX;
+for ($iy = 0; $iy < $size; $iy++) {
+    for ($ix = 0; $ix < $size; $ix++) {
+        $h = $map[$iy][$ix];
+        if ($min > $h) {
+            $min = $h;
+        }
+        if ($max < $h) {
+            $max = $h;
+        }
+    }
+}
+$diff = $max - $min;
+
+for ($iy = 0; $iy < $size; $iy++) {
+    for ($ix = 0; $ix < $size; $ix++) {
+        $h = 255 * ($map[$iy][$ix] - $min) / $diff;
+        $color = imagecolorallocate($image, $h, $h, $h);
         imagesetpixel($image, $ix, $iy, $color);
     }
 }

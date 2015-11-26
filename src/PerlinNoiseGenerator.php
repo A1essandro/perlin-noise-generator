@@ -5,7 +5,7 @@ class PerlinNoiseGenerator
 
     protected $terra;
     protected $persistence;
-    protected $sizes;
+    protected $size;
 
     function __construct()
     {
@@ -14,57 +14,80 @@ class PerlinNoiseGenerator
 
     public function generate()
     {
-        $this->terra = new SplFixedArray($this->sizes[1]);
-        for ($y = 0; $y < $this->sizes[1]; $y++) {
-            $this->terra[$y] = new SplFixedArray($this->sizes[0]);
-        }
+        $this->initTerra();
 
         for ($k = 0; $k < $this->getOctaves(); $k++) {
-            $freq = pow(2, $k);
-            $amp = pow($this->persistence, $k);
-
-            $n = $m = $freq + 1;
-
-            $arr = array();
-            for ($j = 0; $j < $m; $j++) {
-                for ($i = 0; $i < $n; $i++) {
-                    $arr[$j][$i] = $this->random() * $amp;
-                }
-            }
-
-            $nx = $this->sizes[0] / ($n - 1.0);
-            $ny = $this->sizes[1] / ($m - 1.0);
-
-            for ($ky = 0; $ky < $this->sizes[1]; $ky++) {
-                for ($kx = 0; $kx < $this->sizes[0]; $kx++) {
-                    $i = (int)($kx / $nx);
-                    $j = (int)($ky / $ny);
-
-                    $dx0 = $kx - $i * $nx;
-                    $dx1 = $nx - $dx0;
-                    $dy0 = $ky - $j * $ny;
-                    $dy1 = $ny - $dy0;
-
-                    $z = $arr[$j][$i] * $dx1 * $dy1;
-                    $z += $arr[$j][$i + 1] * $dx0 * $dy1;
-                    $z += $arr[$j + 1][$i] * $dx1 * $dy0;
-                    $z += $arr[$j + 1][$i + 1] * $dx0 * $dy0;
-                    $z /= $nx * $ny;
-
-                    if ($this->terra[$ky][$kx] === null) {
-                        $this->terra[$ky][$kx] = 0;
-                    }
-                    $this->terra[$ky][$kx] += $z;
-                }
-            }
+            $this->octave($k);
         }
 
         return $this->terra;
     }
 
+    protected function octave($octave)
+    {
+        $freq = pow(2, $octave);
+        $amp = pow($this->persistence, $octave);
+
+        $n = $m = $freq + 1;
+
+        $arr = array();
+        for ($j = 0; $j < $m; $j++) {
+            for ($i = 0; $i < $n; $i++) {
+                $arr[$j][$i] = $this->random() * $amp;
+            }
+        }
+
+        $nx = $this->size / ($n - 1);
+        $ny = $this->size / ($m - 1);
+
+        for ($ky = 0; $ky < $this->size; $ky++) {
+            for ($kx = 0; $kx < $this->size; $kx++) {
+                $i = (int)($kx / $nx);
+                $j = (int)($ky / $ny);
+
+                $dx0 = $kx - $i * $nx;
+                $dx1 = $nx - $dx0;
+                $dy0 = $ky - $j * $ny;
+                $dy1 = $ny - $dy0;
+
+                $z = $arr[$j][$i] * $dx1 * $dy1;
+                $z += $arr[$j][$i + 1] * $dx0 * $dy1;
+                $z += $arr[$j + 1][$i] * $dx1 * $dy0;
+                $z += $arr[$j + 1][$i + 1] * $dx0 * $dy0;
+                $z /= $nx * $ny;
+
+                if ($this->terra[$ky][$kx] === null) {
+                    $this->terra[$ky][$kx] = 0;
+                }
+                $this->terra[$ky][$kx] += $z;
+            }
+        }
+    }
+
+    /**
+     * terra array initialization
+     */
+    protected function initTerra()
+    {
+        $this->terra = new SplFixedArray($this->size);
+        for ($y = 0; $y < $this->size; $y++) {
+            $this->terra[$y] = new SplFixedArray($this->size);
+        }
+    }
+
+    /**
+     * Getting random float from 0 to 1
+     *
+     * @return float
+     */
+    protected function random()
+    {
+        return (float)rand() / (float)getrandmax();
+    }
+
     protected function getOctaves()
     {
-        return (int)log(max($this->sizes), 2.0);
+        return (int)log($this->size, 2);
     }
 
     /**
@@ -72,21 +95,20 @@ class PerlinNoiseGenerator
      */
     public function getSizes()
     {
-        return $this->sizes;
+        return $this->size;
     }
 
     /**
-     * @param array $sizes
+     * @param int $size
      */
-    public function setSizes(array $sizes)
+    public function setSize($size)
     {
-        if (count($sizes) != 2 || !is_int($sizes[0]) || !is_int($sizes[1])) {
+        if (!is_int($size)) {
             throw new InvalidArgumentException(sprintf(
-                "Sizes must be array with two int elements (keys 0 and 1), %s given",
-                print_r($sizes, 1)));
+                "Sizes must be int , %s given", gettype($size)));
         }
 
-        $this->sizes = $sizes;
+        $this->size = $size;
     }
 
     /**
@@ -109,8 +131,4 @@ class PerlinNoiseGenerator
         $this->persistence = $persistence;
     }
 
-    function random()
-    {
-        return (float)rand() / (float)getrandmax();
-    }
 }
