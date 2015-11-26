@@ -50,15 +50,12 @@ class PerlinNoiseGenerator
                 $dy0 = $ky - $j * $ny;
                 $dy1 = $ny - $dy0;
 
-                $z = $arr[$j][$i] * $dx1 * $dy1;
-                $z += $arr[$j][$i + 1] * $dx0 * $dy1;
-                $z += $arr[$j + 1][$i] * $dx1 * $dy0;
-                $z += $arr[$j + 1][$i + 1] * $dx0 * $dy0;
-                $z /= $nx * $ny;
+                $z = ($arr[$j][$i] * $dx1 * $dy1
+                        + $arr[$j][$i + 1] * $dx0 * $dy1
+                        + $arr[$j + 1][$i] * $dx1 * $dy0
+                        + $arr[$j + 1][$i + 1] * $dx0 * $dy0)
+                    / ($nx * $ny);
 
-                if ($this->terra[$ky][$kx] === null) {
-                    $this->terra[$ky][$kx] = 0;
-                }
                 $this->terra[$ky][$kx] += $z;
             }
         }
@@ -72,6 +69,9 @@ class PerlinNoiseGenerator
         $this->terra = new SplFixedArray($this->size);
         for ($y = 0; $y < $this->size; $y++) {
             $this->terra[$y] = new SplFixedArray($this->size);
+            for ($x = 0; $x < $this->size; $x++) {
+                $this->terra[$y][$x] = 0;
+            }
         }
     }
 
