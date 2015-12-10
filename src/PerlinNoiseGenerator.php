@@ -1,5 +1,9 @@
 <?php
 
+namespace MapGenerator;
+
+use \SplFixedArray;
+
 class PerlinNoiseGenerator
 {
 
