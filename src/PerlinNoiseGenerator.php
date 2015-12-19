@@ -2,7 +2,8 @@
 
 namespace MapGenerator;
 
-use \SplFixedArray;
+use InvalidArgumentException;
+use SplFixedArray;
 
 class PerlinNoiseGenerator
 {
@@ -108,8 +109,11 @@ class PerlinNoiseGenerator
     public function setSize($size)
     {
         if (!is_int($size)) {
-            throw new InvalidArgumentException(sprintf(
-                "Sizes must be int , %s given", gettype($size)));
+            throw new InvalidArgumentException(
+                sprintf(
+                    "Sizes must be int , %s given", gettype($size)
+                )
+            );
         }
 
         $this->size = $size;
