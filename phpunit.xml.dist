@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit
-        bootstrap="./bootstrap.php"
+        bootstrap="test/bootstrap.php"
         backupGlobals="true">
     <testsuites>
         <testsuite name="Perlin-Noise Tests">
@@ -9,7 +9,7 @@
     </testsuites>
     <filter>
         <whitelist>
-            <directory>/src</directory>
+            <directory>./src</directory>
         </whitelist>
     </filter>
 </phpunit>
