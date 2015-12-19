@@ -8,5 +8,5 @@ php:
   - '7.0'
 
 script:
-  - phpunit --configuration phpunit.xms.dist --test-coverage
+  - phpunit --configuration phpunit.xms.dist
 
