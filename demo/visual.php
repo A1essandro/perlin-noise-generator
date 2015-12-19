@@ -1,7 +1,7 @@
 <?php
 
 ini_set('display_errors', 'On');
-require 'src/PerlinNoiseGenerator.php';
+require '../src/PerlinNoiseGenerator.php';
 $gen = new MapGenerator\PerlinNoiseGenerator();
 
 $size = 250;
