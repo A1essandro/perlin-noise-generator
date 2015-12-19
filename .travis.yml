@@ -7,8 +7,19 @@ php:
   - '5.6'
   - '7.0'
 
+matrix:
+  include:
+    - php: 5.3
+      env: dependencies=lowest
+  include:
+    - php: 5.4
+      env: dependencies=lowest
+
+
 before_script:
-  - composer install
+  - composer self-update
+  - composer install -n
+  - if [ "$dependencies" = "lowest" ]; then composer update --prefer-lowest --prefer-stable -n; fi;
 
 script:
   - phpunit --configuration phpunit.xml.dist
