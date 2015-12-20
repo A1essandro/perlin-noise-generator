@@ -1,7 +1,7 @@
 <?php
 $start = microtime(true);
 ini_set('display_errors', 'On');
-require '../src/PerlinNoiseGenerator.php';
+require_once __DIR__ . '/../src/PerlinNoiseGenerator.php';
 $gen = new MapGenerator\PerlinNoiseGenerator();
 
 $gen->setPersistence(0.5);
