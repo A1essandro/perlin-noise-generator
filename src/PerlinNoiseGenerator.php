@@ -3,6 +3,7 @@
 namespace MapGenerator;
 
 use InvalidArgumentException;
+use LogicException;
 use SplFixedArray;
 
 class PerlinNoiseGenerator
@@ -12,9 +13,40 @@ class PerlinNoiseGenerator
     protected $persistence;
     protected $size;
 
-    function __construct()
-    {
+    /**
+     * @var number|string
+     */
+    protected $mapSeed;
 
+    /**
+     * @var number
+     */
+    protected $numericMapSeed;
+
+    /**
+     * @return number|string
+     */
+    public function getMapSeed()
+    {
+        return $this->mapSeed;
+    }
+
+    /**
+     * @param number|string $mapSeed
+     */
+    public function setMapSeed($mapSeed)
+    {
+        if (!is_numeric($mapSeed) && !is_string($mapSeed)) {
+            throw new InvalidArgumentException(
+                sprintf("mapSeed must be string or numeric, %s given", gettype($mapSeed))
+            );
+        }
+
+        $this->mapSeed = $mapSeed;
+
+        $this->numericMapSeed = is_numeric($mapSeed)
+            ? $mapSeed
+            : intval(substr(md5($mapSeed), -8), 16);
     }
 
     public function generate()
@@ -71,6 +103,20 @@ class PerlinNoiseGenerator
      */
     protected function initTerra()
     {
+        if (empty($this->mapSeed)) {
+            $this->setMapSeed(microtime(true));
+        }
+
+        if (!$this->getPersistence()) {
+            throw new LogicException('Persistence must be set');
+        }
+
+        if (!$this->getSize()) {
+            throw new LogicException('Size must be set');
+        }
+
+        mt_srand($this->numericMapSeed * $this->persistence * $this->size);
+
         $this->terra = new SplFixedArray($this->size);
         for ($y = 0; $y < $this->size; $y++) {
             $this->terra[$y] = new SplFixedArray($this->size);
@@ -87,7 +133,7 @@ class PerlinNoiseGenerator
      */
     protected function random()
     {
-        return (float)rand() / (float)getrandmax();
+        return mt_rand() / getrandmax();
     }
 
     protected function getOctaves()
@@ -96,9 +142,18 @@ class PerlinNoiseGenerator
     }
 
     /**
-     * @return array
+     * @deprecated
+     * @return int
      */
     public function getSizes()
+    {
+        return $this->getSize();
+    }
+
+    /**
+     * @return int
+     */
+    public function getSize()
     {
         return $this->size;
     }

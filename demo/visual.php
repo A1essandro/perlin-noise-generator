@@ -8,6 +8,7 @@ $size = 250;
 
 $gen->setPersistence(0.78);
 $gen->setSize($size);
+$gen->setMapSeed('asd');
 $map = $gen->generate();
 
 $image = imagecreatetruecolor($size, $size);

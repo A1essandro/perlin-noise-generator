@@ -6,6 +6,7 @@ $gen = new MapGenerator\PerlinNoiseGenerator();
 
 $gen->setPersistence(0.5);
 $gen->setSize(750);
+$gen->setMapSeed('seed');
 $gen->generate();
 
 echo sprintf('Time: %s', round(microtime(true) - $start, 3));
