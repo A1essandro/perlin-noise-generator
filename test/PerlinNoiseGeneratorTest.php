@@ -94,7 +94,7 @@ class PerlinNoiseGeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function testSetInvalidMapSeed($seed)
     {
-        $this->perlinNoiseGenerator->setSize($seed);
+        $this->perlinNoiseGenerator->setMapSeed($seed);
     }
 
     /**
