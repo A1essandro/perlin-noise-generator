@@ -25,5 +25,6 @@ composer require a1essandro/perlin-noise-generator ~1.0
 $generator = new MapGenerator\PerlinNoiseGenerator();
 $generator->setSize(100) //heightmap size: 100x100
 $generator->setPersistence(0.8) //map roughness
+$generator->setMapSeed('value'); //optional
 $map = $generator->generate();
 ```
