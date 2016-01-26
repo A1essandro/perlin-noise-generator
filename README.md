@@ -16,7 +16,7 @@ See more [getcomposer.org](http://getcomposer.org).
 
 Execute command 
 ```
-composer require a1essandro/perlin-noise-generator ~1.0
+composer require a1essandro/perlin-noise ~1.0
 ```
 
 ##Usage
