@@ -9,9 +9,16 @@ use SplFixedArray;
 class PerlinNoiseGenerator
 {
 
+    /**
+     * @var \SplFixedArray[]
+     */
     protected $terra;
     protected $persistence;
     protected $size;
+
+    const SIZE = 'size';
+    const PERSISTENCE = 'persistence';
+    const MAP_SEED = 'map_seed';
 
     /**
      * @var number|string
@@ -49,8 +56,14 @@ class PerlinNoiseGenerator
             : intval(substr(md5($mapSeed), -8), 16);
     }
 
-    public function generate()
+    /**
+     * @param array $options
+     *
+     * @return \SplFixedArray[]
+     */
+    public function generate(array $options = [])
     {
+        $this->setOptions($options);
         $this->initTerra();
 
         for ($k = 0; $k < $this->getOctaves(); $k++) {
@@ -58,6 +71,24 @@ class PerlinNoiseGenerator
         }
 
         return $this->terra;
+    }
+
+    /**
+     * @param array $options
+     */
+    public function setOptions(array $options)
+    {
+        if (array_key_exists(static::MAP_SEED, $options)) {
+            $this->setMapSeed($options[static::MAP_SEED]);
+        }
+
+        if (array_key_exists(static::SIZE, $options)) {
+            $this->setSize($options[static::SIZE]);
+        }
+
+        if (array_key_exists(static::PERSISTENCE, $options)) {
+            $this->setPersistence($options[static::PERSISTENCE]);
+        }
     }
 
     protected function octave($octave)

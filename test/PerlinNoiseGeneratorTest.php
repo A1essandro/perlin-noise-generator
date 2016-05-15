@@ -165,6 +165,35 @@ class PerlinNoiseGeneratorTest extends PHPUnit_Framework_TestCase
         $this->perlinNoiseGenerator->generate();
     }
 
+    public function testGenerationWithOptions()
+    {
+        $this->perlinNoiseGenerator->generate([
+            PerlinNoiseGenerator::SIZE => 100,
+            PerlinNoiseGenerator::PERSISTENCE => 0.756,
+            PerlinNoiseGenerator::MAP_SEED => microtime()
+        ]);
+    }
+
+    public function testMixedOptionsGeneration()
+    {
+        $this->perlinNoiseGenerator->setSize(100);
+        $this->perlinNoiseGenerator->generate([
+            PerlinNoiseGenerator::PERSISTENCE => 0.756,
+            PerlinNoiseGenerator::MAP_SEED => microtime()
+        ]);
+    }
+
+    /**
+     * @expectedException LogicException
+     */
+    public function testGenerationViaOptionsWithoutSize()
+    {
+        $this->perlinNoiseGenerator->generate([
+            PerlinNoiseGenerator::PERSISTENCE => 0.756,
+            PerlinNoiseGenerator::MAP_SEED => microtime()
+        ]);
+    }
+
     #endregion
 
     private static function expandMap($map)
