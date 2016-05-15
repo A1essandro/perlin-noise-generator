@@ -61,7 +61,7 @@ class PerlinNoiseGenerator
      *
      * @return \SplFixedArray[]
      */
-    public function generate(array $options = [])
+    public function generate(array $options = array())
     {
         $this->setOptions($options);
         $this->initTerra();

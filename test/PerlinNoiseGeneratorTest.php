@@ -167,20 +167,20 @@ class PerlinNoiseGeneratorTest extends PHPUnit_Framework_TestCase
 
     public function testGenerationWithOptions()
     {
-        $this->perlinNoiseGenerator->generate([
+        $this->perlinNoiseGenerator->generate(array(
             PerlinNoiseGenerator::SIZE => 100,
             PerlinNoiseGenerator::PERSISTENCE => 0.756,
             PerlinNoiseGenerator::MAP_SEED => microtime()
-        ]);
+        ));
     }
 
     public function testMixedOptionsGeneration()
     {
         $this->perlinNoiseGenerator->setSize(100);
-        $this->perlinNoiseGenerator->generate([
+        $this->perlinNoiseGenerator->generate(array(
             PerlinNoiseGenerator::PERSISTENCE => 0.756,
             PerlinNoiseGenerator::MAP_SEED => microtime()
-        ]);
+        ));
     }
 
     /**
@@ -188,10 +188,10 @@ class PerlinNoiseGeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function testGenerationViaOptionsWithoutSize()
     {
-        $this->perlinNoiseGenerator->generate([
+        $this->perlinNoiseGenerator->generate(array(
             PerlinNoiseGenerator::PERSISTENCE => 0.756,
             PerlinNoiseGenerator::MAP_SEED => microtime()
-        ]);
+        ));
     }
 
     #endregion
