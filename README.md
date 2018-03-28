@@ -2,16 +2,16 @@
 
 [![Build Status](https://travis-ci.org/A1essandro/perlin-noise-generator.svg)](https://travis-ci.org/A1essandro/perlin-noise-generator) [![Coverage Status](https://coveralls.io/repos/A1essandro/perlin-noise-generator/badge.svg?branch=master&service=github)](https://coveralls.io/github/A1essandro/perlin-noise-generator?branch=master) [![Latest Stable Version](https://poser.pugx.org/a1essandro/perlin-noise/v/stable)](https://packagist.org/packages/a1essandro/perlin-noise) [![Total Downloads](https://poser.pugx.org/a1essandro/perlin-noise/downloads)](https://packagist.org/packages/a1essandro/perlin-noise) [![Latest Unstable Version](https://poser.pugx.org/a1essandro/perlin-noise/v/unstable)](https://packagist.org/packages/a1essandro/perlin-noise) [![License](https://poser.pugx.org/a1essandro/perlin-noise/license)](https://packagist.org/packages/a1essandro/perlin-noise)
 
-##Description
+## Description
 Heightmaps generator on PHP using perlin-noise algorithm.
 
 See also [Diamond-Square algorithm](https://github.com/A1essandro/Diamond-And-Square) with the similar API.
 
-##Requirements
+## Requirements
 This package is only supported on PHP 5.3 and above.
 
-##Installing
-###Composer
+## Installing
+### Composer
 See more [getcomposer.org](http://getcomposer.org).
 
 Execute command 
@@ -19,7 +19,7 @@ Execute command
 composer require a1essandro/perlin-noise ~1.0
 ```
 
-##Usage
+## Usage
 
 ```php
 $generator = new MapGenerator\PerlinNoiseGenerator();
@@ -29,7 +29,7 @@ $generator->setMapSeed('value'); //optional
 $map = $generator->generate();
 ```
 
-####or
+#### or
 
 ```php
 $generator = new MapGenerator\PerlinNoiseGenerator();
@@ -40,7 +40,7 @@ $map = $generator->generate([
 ]);
 ```
 
-####mixed:
+#### mixed:
 
 ```php
 $generator = new MapGenerator\PerlinNoiseGenerator();
