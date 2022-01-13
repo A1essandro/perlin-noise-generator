@@ -2,10 +2,7 @@
 
 use MapGenerator\PerlinNoiseGenerator;
 
-require_once __DIR__ . '/../vendor/autoload.php';
-
-
-class PerlinNoiseGeneratorTest extends PHPUnit_Framework_TestCase
+class PerlinNoiseGeneratorTest extends PHPUnit\Framework\TestCase
 {
 
     /**
@@ -13,12 +10,12 @@ class PerlinNoiseGeneratorTest extends PHPUnit_Framework_TestCase
      */
     protected $perlinNoiseGenerator;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->perlinNoiseGenerator = new PerlinNoiseGenerator();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->perlinNoiseGenerator = null;
     }
@@ -62,7 +59,6 @@ class PerlinNoiseGeneratorTest extends PHPUnit_Framework_TestCase
     }
 
     #endregion
-
     #region Tests
 
     /**
@@ -81,28 +77,28 @@ class PerlinNoiseGeneratorTest extends PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider providerSetSizeNotInt
-     * @expectedException InvalidArgumentException
      */
     public function testSetSizeNotInt($sizeToSet)
     {
+        $this->expectException(InvalidArgumentException::class);
         $this->perlinNoiseGenerator->setSize($sizeToSet);
     }
 
     /**
      * @dataProvider providerSetInvalidMapSeed
-     * @expectedException InvalidArgumentException
      */
     public function testSetInvalidMapSeed($seed)
     {
+        $this->expectException(InvalidArgumentException::class);
         $this->perlinNoiseGenerator->setMapSeed($seed);
     }
 
     /**
      * @dataProvider providerSetInvalidPersistence
-     * @expectedException InvalidArgumentException
      */
     public function testSetInvalidPersistence($persistence)
     {
+        $this->expectException(InvalidArgumentException::class);
         $this->perlinNoiseGenerator->setPersistence($persistence);
     }
 
@@ -147,47 +143,45 @@ class PerlinNoiseGeneratorTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(self::expandMap($map1), self::expandMap($map2));
     }
 
-    /**
-     * @expectedException LogicException
-     */
     public function testGenerationWithoutPersistence()
     {
+        $this->expectException(LogicException::class);
         $this->perlinNoiseGenerator->setSize(30);
         $this->perlinNoiseGenerator->generate();
     }
 
-    /**
-     * @expectedException LogicException
-     */
     public function testGenerationWithoutSize()
     {
+        $this->expectException(LogicException::class);
         $this->perlinNoiseGenerator->setPersistence(0.5);
         $this->perlinNoiseGenerator->generate();
     }
 
     public function testGenerationWithOptions()
     {
-        $this->perlinNoiseGenerator->generate(array(
+        $noise = $this->perlinNoiseGenerator->generate(array(
             PerlinNoiseGenerator::SIZE => 100,
             PerlinNoiseGenerator::PERSISTENCE => 0.756,
             PerlinNoiseGenerator::MAP_SEED => microtime()
         ));
+
+        $this->assertInstanceOf(SplFixedArray::class, $noise);
     }
 
     public function testMixedOptionsGeneration()
     {
         $this->perlinNoiseGenerator->setSize(100);
-        $this->perlinNoiseGenerator->generate(array(
+        $noise = $this->perlinNoiseGenerator->generate(array(
             PerlinNoiseGenerator::PERSISTENCE => 0.756,
             PerlinNoiseGenerator::MAP_SEED => microtime()
         ));
+
+        $this->assertInstanceOf(SplFixedArray::class, $noise);
     }
 
-    /**
-     * @expectedException LogicException
-     */
     public function testGenerationViaOptionsWithoutSize()
     {
+        $this->expectException(LogicException::class);
         $this->perlinNoiseGenerator->generate(array(
             PerlinNoiseGenerator::PERSISTENCE => 0.756,
             PerlinNoiseGenerator::MAP_SEED => microtime()
