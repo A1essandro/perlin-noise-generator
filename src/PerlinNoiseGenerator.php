@@ -41,7 +41,7 @@ class PerlinNoiseGenerator
     /**
      * @param number|string $mapSeed
      */
-    public function setMapSeed($mapSeed)
+    public function setMapSeed($mapSeed): void
     {
         if (!is_numeric($mapSeed) && !is_string($mapSeed)) {
             throw new InvalidArgumentException(
@@ -61,7 +61,7 @@ class PerlinNoiseGenerator
      *
      * @return \SplFixedArray[]
      */
-    public function generate(array $options = array())
+    public function generate(array $options = []): SplFixedArray
     {
         $this->setOptions($options);
         $this->initTerra();
@@ -76,29 +76,32 @@ class PerlinNoiseGenerator
     /**
      * @param array $options
      */
-    public function setOptions(array $options)
+    public function setOptions(array $options): void
     {
-        if (array_key_exists(static::MAP_SEED, $options)) {
-            $this->setMapSeed($options[static::MAP_SEED]);
+        if (array_key_exists(self::MAP_SEED, $options)) {
+            $this->setMapSeed($options[self::MAP_SEED]);
         }
 
-        if (array_key_exists(static::SIZE, $options)) {
-            $this->setSize($options[static::SIZE]);
+        if (array_key_exists(self::SIZE, $options)) {
+            $this->setSize($options[self::SIZE]);
         }
 
-        if (array_key_exists(static::PERSISTENCE, $options)) {
-            $this->setPersistence($options[static::PERSISTENCE]);
+        if (array_key_exists(self::PERSISTENCE, $options)) {
+            $this->setPersistence($options[self::PERSISTENCE]);
         }
     }
 
-    protected function octave($octave)
+    /*
+     * /!\ edge effet on this
+     */
+    protected function octave(int $octave): void
     {
         $freq = pow(2, $octave);
         $amp = pow($this->persistence, $octave);
 
         $n = $m = $freq + 1;
 
-        $arr = array();
+        $arr = [];
         for ($j = 0; $j < $m; $j++) {
             for ($i = 0; $i < $n; $i++) {
                 $arr[$j][$i] = $this->random() * $amp;
@@ -132,7 +135,7 @@ class PerlinNoiseGenerator
     /**
      * terra array initialization
      */
-    protected function initTerra()
+    protected function initTerra(): void
     {
         if (empty($this->mapSeed)) {
             $this->setMapSeed(microtime(true));
@@ -162,12 +165,12 @@ class PerlinNoiseGenerator
      *
      * @return float
      */
-    protected function random()
+    protected function random(): float
     {
         return mt_rand() / getrandmax();
     }
 
-    protected function getOctaves()
+    protected function getOctaves(): int
     {
         return (int)log($this->size, 2);
     }
@@ -176,7 +179,7 @@ class PerlinNoiseGenerator
      * @deprecated
      * @return int
      */
-    public function getSizes()
+    public function getSizes(): int
     {
         return $this->getSize();
     }
@@ -184,7 +187,7 @@ class PerlinNoiseGenerator
     /**
      * @return int
      */
-    public function getSize()
+    public function getSize(): int
     {
         return $this->size;
     }
@@ -192,14 +195,10 @@ class PerlinNoiseGenerator
     /**
      * @param int $size
      */
-    public function setSize($size)
+    public function setSize(int $size): void
     {
-        if (!is_int($size)) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    "Sizes must be int , %s given", gettype($size)
-                )
-            );
+        if ($size <= 0) {
+            throw new InvalidArgumentException("Positive integers only");
         }
 
         $this->size = $size;
@@ -208,7 +207,7 @@ class PerlinNoiseGenerator
     /**
      * @return float
      */
-    public function getPersistence()
+    public function getPersistence(): float
     {
         return $this->persistence;
     }
@@ -216,12 +215,8 @@ class PerlinNoiseGenerator
     /**
      * @param float $persistence
      */
-    public function setPersistence($persistence)
+    public function setPersistence(float $persistence): void
     {
-        if (!is_numeric($persistence)) {
-            throw new InvalidArgumentException(sprintf("persistence must be numeric, %s given", gettype($persistence)));
-        }
-
         $this->persistence = $persistence;
     }
 

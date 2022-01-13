@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit
-        bootstrap="test/bootstrap.php"
-        backupGlobals="true">
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd" 
+         bootstrap="vendor/autoload.php" 
+         cacheResultFile=".phpunit.cache/test-results" 
+         failOnRisky="true" 
+         failOnWarning="true" 
+         verbose="true" 
+         colors="true">
+    <coverage>
+        <include>
+            <directory>./src</directory>
+        </include>
+        <report>
+            <html outputDirectory="./.coverage" lowUpperBound="50" highLowerBound="90"/>
+        </report>
+    </coverage>
     <testsuites>
         <testsuite name="Perlin-Noise Tests">
             <directory>./test/</directory>
         </testsuite>
     </testsuites>
-    <filter>
-        <whitelist>
-            <directory>./src</directory>
-        </whitelist>
-    </filter>
 </phpunit>
