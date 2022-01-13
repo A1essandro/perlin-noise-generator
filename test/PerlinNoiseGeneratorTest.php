@@ -34,9 +34,7 @@ class PerlinNoiseGeneratorTest extends PHPUnit\Framework\TestCase
     public function providerSetSizeNotInt()
     {
         return array(
-            array('a'),
-            array(2.1),
-            array(10.)
+            [-42]
         );
     }
 
@@ -93,15 +91,6 @@ class PerlinNoiseGeneratorTest extends PHPUnit\Framework\TestCase
         $this->perlinNoiseGenerator->setMapSeed($seed);
     }
 
-    /**
-     * @dataProvider providerSetInvalidPersistence
-     */
-    public function testSetInvalidPersistence($persistence)
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->perlinNoiseGenerator->setPersistence($persistence);
-    }
-
     public function testContains()
     {
         $this->perlinNoiseGenerator->setSize(10);
@@ -145,14 +134,14 @@ class PerlinNoiseGeneratorTest extends PHPUnit\Framework\TestCase
 
     public function testGenerationWithoutPersistence()
     {
-        $this->expectException(LogicException::class);
+        $this->expectError();
         $this->perlinNoiseGenerator->setSize(30);
         $this->perlinNoiseGenerator->generate();
     }
 
     public function testGenerationWithoutSize()
     {
-        $this->expectException(LogicException::class);
+        $this->expectError();
         $this->perlinNoiseGenerator->setPersistence(0.5);
         $this->perlinNoiseGenerator->generate();
     }
@@ -181,7 +170,7 @@ class PerlinNoiseGeneratorTest extends PHPUnit\Framework\TestCase
 
     public function testGenerationViaOptionsWithoutSize()
     {
-        $this->expectException(LogicException::class);
+        $this->expectError();
         $this->perlinNoiseGenerator->generate(array(
             PerlinNoiseGenerator::PERSISTENCE => 0.756,
             PerlinNoiseGenerator::MAP_SEED => microtime()
