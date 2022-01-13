@@ -78,16 +78,16 @@ class PerlinNoiseGenerator
      */
     public function setOptions(array $options): void
     {
-        if (array_key_exists(static::MAP_SEED, $options)) {
-            $this->setMapSeed($options[static::MAP_SEED]);
+        if (array_key_exists(self::MAP_SEED, $options)) {
+            $this->setMapSeed($options[self::MAP_SEED]);
         }
 
-        if (array_key_exists(static::SIZE, $options)) {
-            $this->setSize($options[static::SIZE]);
+        if (array_key_exists(self::SIZE, $options)) {
+            $this->setSize($options[self::SIZE]);
         }
 
-        if (array_key_exists(static::PERSISTENCE, $options)) {
-            $this->setPersistence($options[static::PERSISTENCE]);
+        if (array_key_exists(self::PERSISTENCE, $options)) {
+            $this->setPersistence($options[self::PERSISTENCE]);
         }
     }
 
