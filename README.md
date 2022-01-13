@@ -8,7 +8,7 @@ Heightmaps generator on PHP using perlin-noise algorithm.
 See also [Diamond-Square algorithm](https://github.com/A1essandro/Diamond-And-Square) with the similar API.
 
 ## Requirements
-This package is only supported on PHP 5.3 and above.
+This package is only supported on PHP 7.3 and above.
 
 ## Installing
 ### Composer
