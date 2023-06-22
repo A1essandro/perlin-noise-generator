@@ -146,7 +146,7 @@ class PerlinNoiseGenerator
             throw new LogicException('Size must be set');
         }
 
-        mt_srand($this->numericMapSeed * $this->persistence * $this->size);
+        mt_srand((int)($this->numericMapSeed * $this->persistence * $this->size));
 
         $this->terra = new SplFixedArray($this->size);
         for ($y = 0; $y < $this->size; $y++) {
